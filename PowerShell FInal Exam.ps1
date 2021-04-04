@@ -1,7 +1,7 @@
 #PowewerShell - Final Exam
-#Student Name:
-#Course #:
-#Date:
+#Student Name: Dylen Stewart
+#Course #: IT-154-900
+#Date:4/4/2021
 ##########################################################
 
 #Question #1
