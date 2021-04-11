@@ -30,8 +30,63 @@ Get-DnsServerResourceRecord -ZoneName "ITNET-154.pri"
 
 
 #region Question #3
-#submitted by
-#date
+
+#Used this on DC1
+Add-WindowsFeature -IncludeManagementTools dhcp
+
+#Used this to add some basic secruity groups
+netsh dhcp add securitygroups
+
+#Used this to authorize DHCP server
+Add-DhcpServerInDC
+
+#This gets rid of the DCHP notifaction 
+Set-ItemProperty `
+        –Path registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ServerManager\Roles\12 `
+        –Name ConfigurationState `
+        –Value 2
+        
+#Adding a Scope to the DHCP Server
+Add-DhcpServerv4Scope `
+        -Name “192.168.20.0” `
+        -StartRange 192.168.20.240 `
+        -EndRange 192.168.20.250 `
+        -SubnetMask 255.255.255.0 `
+        -ComputerName DC1 `
+        -LeaseDuration 8:0:0:0 `
+        -verbose
+
+#Adding extra settings to the scope
+Set-DhcpServerv4OptionValue  `
+        -ScopeId 192.168.20.0 `
+        -ComputerName DC1.ITNET-154.pri `
+        -DnsServer 192.168.20.101 `
+        -DnsDomain itnet-154.pri `
+        -Router 192.168.20.1 `
+        -Verbose
+
+#Used this to change IP Address of Client1
+#Remove IP address
+$interface = Get-NetAdapter -Physical | Get-NetIPInterface -AddressFamily "IPv4"
+#if DHCP is enabled there's nothing to do
+#If DHCP is disabled (static IP address), remove the default gateway, remove DNS and then enable DHCP, which will delete static IP
+If ($interface.Dhcp -eq "Disabled") {
+ # Remove existing gateway
+ If (($interface | Get-NetIPConfiguration).Ipv4DefaultGateway) { $interface | Remove-NetRoute -Confirm:$false }
+ # Enable DHCP
+ $interface | Set-NetIPInterface -DHCP Enabled
+ # Configure the DNS Servers automatically
+ $interface | Set-DnsClientServerAddress -ResetServerAddresses
+}
+
+#This and the next script are used to test the DHCP scope.
+
+Get-DhcpServerv4Lease -ScopeId 192.168.20.0
+
+Test-NetConnection 192.168.20.201
+
+#submitted by Dylen Stewart
+#date 4/11/2021
 
 #endregion
 
