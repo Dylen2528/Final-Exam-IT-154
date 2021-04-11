@@ -22,8 +22,8 @@ Get-DnsServerZone -ComputerName DC1
 #This is for getting the Dns Resource Record.
 Get-DnsServerResourceRecord -ZoneName "ITNET-154.pri"
 
-#submitted by
-#date
+#submitted by Dylen Stewart
+#date 4/4/2021
 
 
 #endregion 
