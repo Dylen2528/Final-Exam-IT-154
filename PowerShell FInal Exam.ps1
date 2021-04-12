@@ -150,12 +150,56 @@ Get-ADOrganizationalUnit -Filter * | Select DistinguishedName | ft -auto
 #endregion
 
 #region Question #6 
-#submitted by
-#date
+
+#An OU Called Temp Employess
+New-ADOrganizationalUnit -Name TempEmployees -Path "DC=ITNET-154, DC=pri"
+
+#Create 50 Users. Gonna modify the script below
+
+#The following script can be used to create bulk users
+#Create 20 Users.ps1
+#3/9/2019
+
+#$DomainName set to your domain
+$domainName = "ITNET-154.pri"
+
+#$Path should be set to the distinguished name of the OU where users will be created
+#The following will show Distinguished Names for all OUs
+Get-ADOrganizationalUnit -Filter * | select-object name, distinguishedname
+
+$path = "OU=TempEmployees,DC=ITNET-154,DC=pri"
+
+#$total should be set to how many users you want to create
+$total=50
+
+#The following block of code will get executed multiple times (or whatever the value of $total is set to.
+1..$total |foreach { 
+$userName = "Worker$_"
+Write-Host "Creating user $userName@$domainName.  User $_ of $total" 
+
+New-ADUser -AccountPassword (ConvertTo-SecureString "Password01" -AsPlainText -Force) `
+-Name "$userName" `
+-Enabled $true `
+-Path $path `
+-SamAccountName "$userName" `
+-UserPrincipalName ($userName + "@" + $domainName)
+}
+
+Get-ADUser -Filter * -SearchBase $path
+
+#Lastly show the Users are made
+$path = "OU=TempEmployees,DC=ITNET-154,DC=pri"
+Get-ADUser -Filter * -SearchBase $path
+
+#submitted by Dylen Stewart
+#date 4/11/2021
 
 #endregion
 
 #region Question #7 
+
+#
+
 #submitted by
 #date
 
