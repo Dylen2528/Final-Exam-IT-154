@@ -13,7 +13,7 @@
 # I used this on DC1,DC2,and Client1 since the firewall is enabled.
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False 
 
-# I used this to test the conection from Client1. This can be modified to be used for the other machines.
+# I used this to test the connection from Client1. This can be modified to be used for the other machines.
 Test-Connection -ComputerName DC1,DC2
 
 # The DnsServerZone for DC1
@@ -34,13 +34,13 @@ Get-DnsServerResourceRecord -ZoneName "ITNET-154.pri"
 #Used this on DC1
 Add-WindowsFeature -IncludeManagementTools dhcp
 
-#Used this to add some basic secruity groups
+#Used this to add some basic security groups
 netsh dhcp add securitygroups
 
 #Used this to authorize DHCP server
 Add-DhcpServerInDC
 
-#This gets rid of the DCHP notifaction 
+#This gets rid of the DHCP notification 
 Set-ItemProperty `
         –Path registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ServerManager\Roles\12 `
         –Name ConfigurationState `
@@ -151,7 +151,7 @@ Get-ADOrganizationalUnit -Filter * | Select DistinguishedName | ft -auto
 
 #region Question #6 
 
-#An OU Called Temp Employess
+#An OU Called Temp Employees
 New-ADOrganizationalUnit -Name TempEmployees -Path "DC=ITNET-154, DC=pri"
 
 #Create 50 Users. Gonna modify the script below
@@ -253,7 +253,7 @@ Get-ADUser -Filter * -SearchBase $office
 #Create a new global security Group
 New-ADGroup -GroupScope Global -name "GG_AllEmployees"
 
-#Add all Employee groups to the new Secruity Group
+#Add all Employee groups to the new Security Group
 Add-ADGroupMember -Identity "GG_AllEmployees" -Members "GG_Factory" 
 
 Add-ADGroupMember -Identity "GG_AllEmployees" -Members "GG_Office"
