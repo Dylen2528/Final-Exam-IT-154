@@ -198,27 +198,70 @@ Get-ADUser -Filter * -SearchBase $path
 
 #region Question #7 
 
-#
+#Create the Global Security Group
+New-ADGroup -GroupScope Global -name "GG_Factory"
 
-#submitted by
-#date
+#Move Users to group
+1..5 | foreach {Add-ADGroupMember -Identity "GG_Factory" -Members "Worker$_" }
+
+#Double Check time
+Get-ADGroupMember -Identity "GG_Factory"
+
+#submitted by Dylen Stewart
+#date 4/11/2021
 
 #endregion
 
 #region Question #8
-#submitted by
-#date
+
+#Create the Global Security Group, but with a new name.
+New-ADGroup -GroupScope Global -name "GG_Office"
+
+#Move Users to group...A cooler Group that is
+6..10 | foreach {Add-ADGroupMember -Identity "GG_Office" -Members "Worker$_" }
+
+#Double Check time... or is it? (It is).
+Get-ADGroupMember -Identity "GG_Office"
+
+#submitted by Dylen Stewart
+#date 4/11/2021
 
 #endregion
 
 #region Question #9
-#submitted by
-#date
+
+#Move some workers to some OUs
+$factory ="OU=Factory,OU=Employees,DC=ITNET-154,DC=pri"
+$office = "OU=Office,OU=Employees,DC=ITNET-154,DC=pri"
+
+1..5 | foreach { Get-aduser "Worker$_" | Move-ADObject -TargetPath $factory }
+
+6..10 | foreach { Get-aduser "Worker$_" | Move-ADObject -TargetPath $office }
+
+#Lets see how are Employee sub folder is looking like
+Get-ADUser -Filter * -SearchBase $factory
+
+Get-ADUser -Filter * -SearchBase $office
+
+#submitted by Dylen Stewart
+#date 4/11/2021
 
 #endregion
 
 #region Question #10
-#submitted by
-#date
+
+#Create a new global security Group
+New-ADGroup -GroupScope Global -name "GG_AllEmployees"
+
+#Add all Employee groups to the new Secruity Group
+Add-ADGroupMember -Identity "GG_AllEmployees" -Members "GG_Factory" 
+
+Add-ADGroupMember -Identity "GG_AllEmployees" -Members "GG_Office"
+
+#Now show the groups members
+Get-ADGroupMember -Identity "GG_AllEmployees"
+
+#submitted by Dylen Stewart
+#date 4/11/2021
 
 #endregion 
