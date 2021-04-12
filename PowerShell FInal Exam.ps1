@@ -91,8 +91,40 @@ Test-NetConnection 192.168.20.201
 #endregion
 
 #region Question #4
-#submitted by
-#date
+
+#This is used to make a new OU
+New-ADOrganizationalUnit -Name DAs -Path "DC=ITNET-154, DC=pri"
+
+#Since Domain Admins is already made, we just have to add the Domain admin users with this.
+New-ADUser `
+-AccountPassword (ConvertTo-SecureString "Password01" -AsPlainText -Force) `
+-Name "DomainAdmin1" `
+-Enabled $true `
+-Path "OU=DAs, DC=ITNET-154, DC=pri" `
+-SamAccountName DomainAdmin1 `
+-UserPrincipalName ("Admin1@ITNET-154.pri")
+
+New-ADUser `
+-AccountPassword (ConvertTo-SecureString "Password01" -AsPlainText -Force) `
+-Name "DomainAdmin20" `
+-Enabled $true `
+-Path "OU=DAs, DC=ITNET-154, DC=pri" `
+-SamAccountName DomainAdmin20 `
+-UserPrincipalName ("Admin2@ITNET-154.pri")
+
+#Make the new users Domain Admins
+Add-ADGroupMember -Identity 'Domain Admins' -Members 'DomainAdmin1','DomainAdmin20'
+
+#Now to help show our work on DC2
+(Get-CimInstance -ClassName Win32_ComputerSystem | select username).username
+
+Get-LocalUser
+
+#Show Domain Admins
+Get-ADGroupMember "Domain Admins"
+
+#submitted by Dylen Stewart
+#date 4/11/2021
 
 #endregion
 
