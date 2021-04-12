@@ -129,8 +129,23 @@ Get-ADGroupMember "Domain Admins"
 #endregion
 
 #region Question #5
-#submitted by
-#date
+
+#Make OUs and sub OUs
+New-ADOrganizationalUnit -Name Employees -Path "DC=ITNET-154, DC=pri"
+New-ADOrganizationalUnit -Name Workstations -Path "DC=ITNET-154, DC=pri"
+New-ADOrganizationalUnit -Name "Member Servers" -Path "DC=ITNET-154, DC=pri"
+
+New-ADOrganizationalUnit -Name Office -Path "OU=Employees, DC=ITNET-154, DC=pri"
+New-ADOrganizationalUnit -Name Factory -Path "OU=Employees, DC=ITNET-154, DC=pri"
+
+New-ADOrganizationalUnit -Name Office -Path "OU=Workstations, DC=ITNET-154, DC=pri"
+New-ADOrganizationalUnit -Name Factory -Path "OU=Workstations, DC=ITNET-154, DC=pri"
+
+#Now to show the OU are created
+Get-ADOrganizationalUnit -Filter * | Select DistinguishedName | ft -auto
+
+#submitted by Dylen Stewart
+#date 4/11/2021
 
 #endregion
 
