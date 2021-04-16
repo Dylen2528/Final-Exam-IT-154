@@ -266,7 +266,7 @@ Get-ADGroupMember -Identity "GG_AllEmployees"
 
 #endregion 
 
-#region Queston #11
+#region Question #11
 
 #First Create Create C:\AllEmplys
 
@@ -291,7 +291,7 @@ Get-acl -path “C:\AllEmplys” | format-list
 #New Folder
 New-Item -Path "C:\AllEmplys" -Name "FactoryStuff" -ItemType Directory
 
-#Disable Inherentace
+#Disable Inheritance
 #https://blog.netwrix.com/2018/04/18/how-to-manage-file-system-acls-with-powershell-scripts/
 $acl = Get-acl "C:\AllEmplys"
 #The first parameter is responsible for blocking inheritance from the parent folder. It has two states: “$true” and “$false”.
@@ -309,13 +309,13 @@ $acl | fl
 
 $acl = Get-acl "C:\Emplys"
 
-#Assign read permisons to GG_Office
+#Assign read permissions to GG_Office
 $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule("ITNET-154\GG_Office","ReadAndExecute","ContainerInherit, ObjectInherit", "None","Allow")
 $acl.SetAccessRule($AccessRule)
 $acl | Set-Acl C:\AllEmplys
 $acl | fl
 
-#Assign Read and Write Permisons to GG_Factory
+#Assign Read and Write Permissions to GG_Factory
 $acl = Get-acl "C:\Emplys"
 
 $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule("ITNET-154\GG_Factory","ReadAndExecute,Write","ContainerInherit, ObjectInherit", "None","Allow")
@@ -323,7 +323,7 @@ $acl.SetAccessRule($AccessRule)
 $acl | Set-Acl C:\AllEmplys
 $acl | fl
 
-#Assig Full Contronl For Domain Admins
+#Assign Full Control For Domain Admins
 $acl = Get-acl "C:\Emplys"
 
 $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule("ITNET-154\Domain Admins","FullControl","ContainerInherit, ObjectInherit", "None","Allow")
@@ -340,9 +340,9 @@ $acl | fl
 
 #endregion
 
-#region Queston #13
+#region Question #13
 
-#Use Power Shell To Show Group Member
+#Use Powershell To Show Group Member
 Get-ADUser -Filter  *  -Properties Name, MemberOf  |  Format-Table  -Property  Name,  MemberOf  -AutoSize
 
 #submitted by Dylen Stewart
