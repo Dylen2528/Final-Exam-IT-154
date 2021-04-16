@@ -284,6 +284,8 @@ Get-acl -path “C:\AllEmplys” | format-list
 #submitted by Dylen Stewart
 #date 4/15/2021
 
+#endregion
+
 #region Queston #12
 
 #New Folder
@@ -336,6 +338,8 @@ $acl | fl
 #submitted by Dylen Stewart
 #date 4/15/2021
 
+#endregion
+
 #region Queston #13
 
 #Use Power Shell To Show Group Member
@@ -343,3 +347,5 @@ Get-ADUser -Filter  *  -Properties Name, MemberOf  |  Format-Table  -Property  N
 
 #submitted by Dylen Stewart
 #date 4/15/2021
+
+#endregion
